@@ -1,10 +1,10 @@
 package org.example.services;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import javax.lang.model.element.Element;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class TextFileIO implements FileOnInterface {
     @Override
@@ -20,7 +20,7 @@ public class TextFileIO implements FileOnInterface {
             }
 
         }catch(IOException e){
-            e.printStackTrace();
+            System.out.println(e.getCause());
         }finally {
             if(stream!= null){
                 stream.close();
@@ -29,7 +29,30 @@ public class TextFileIO implements FileOnInterface {
     }
 
     @Override
-    public <T> List<T> importData(String fileName) throws IOException {
-        return null;
+    public  List<String> importData(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileInputStream stream = null;
+        List<String> list = new ArrayList<>();
+
+        try{
+            stream = new FileInputStream(file);
+            Scanner scanner = new Scanner(stream);
+
+            while(scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                list.add(line);
+            }
+
+        }catch(IOException exception){
+            System.out.println(exception.getCause());
+        }finally {
+            if(stream!=null){
+                stream.close();
+            }
+        }
+
+
+
+        return list;
     }
 }
